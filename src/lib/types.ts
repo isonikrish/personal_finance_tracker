@@ -1,4 +1,3 @@
-
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export type signupType = {
@@ -69,8 +68,8 @@ export type AddTransactionData = {
   amount: number;
   description: string;
   date: string;
+  time: string;
 };
-
 export type CreateAccountData = {
   name: string;
   type: AccountType;
@@ -81,15 +80,9 @@ export type useAuthStoreType = {
   user: userType | null;
   isUserLoading: boolean;
 
-  signup: (
-    data: signupType,
-    router: AppRouterInstance,
-  ) => Promise<void>;
+  signup: (data: signupType, router: AppRouterInstance) => Promise<void>;
 
-  login: (
-    data: loginType,
-    router: AppRouterInstance,
-  ) => Promise<void>;
+  login: (data: loginType, router: AppRouterInstance) => Promise<void>;
 
   logout: (router: AppRouterInstance) => Promise<void>;
 
@@ -106,13 +99,9 @@ export type useAuthStoreType = {
   fetchDashboard: () => Promise<boolean>;
   fetchTransactions: () => Promise<boolean>;
 
-  addTransaction: (
-    data: AddTransactionData,
-  ) => Promise<boolean>;
+  addTransaction: (data: AddTransactionData) => Promise<boolean>;
 
   deleteTransaction: (id: number) => Promise<boolean>;
 
-  createAccount: (
-    data: CreateAccountData,
-  ) => Promise<boolean>;
+  createAccount: (data: CreateAccountData) => Promise<boolean>;
 };

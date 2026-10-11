@@ -53,7 +53,7 @@ export async function GET() {
           accountName: account.name,
         })),
       )
-      .sort((a, b) => a.date.getTime() - b.date.getTime() || a.id - b.id);
+      .sort((a, b) => b.date.getTime() - a.date.getTime() || b.id - a.id);
 
     // 4. Calculate totals
     const totalIncome = transactions

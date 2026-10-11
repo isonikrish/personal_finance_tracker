@@ -35,13 +35,23 @@ import {
 import { LogOut } from "lucide-react";
 
 function getTodayDate() {
-  const today = new Date();
+  const now = new Date();
 
-  today.setMinutes(
-    today.getMinutes() - today.getTimezoneOffset(),
-  );
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+}
 
-  return today.toISOString().slice(0, 10);
+function getCurrentTime() {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date());
 }
 
 export default function DashboardPage() {
@@ -109,6 +119,7 @@ export default function DashboardPage() {
     useState("");
 
   const [transactionDate, setTransactionDate] = useState("");
+  const [transactionTime, setTransactionTime] = useState("");
   // Account form
   const [accountName, setAccountName] = useState("");
 
@@ -122,6 +133,8 @@ export default function DashboardPage() {
   };
   useEffect(() => {
     setTransactionDate(getTodayDate());
+    setTransactionTime(getCurrentTime());
+
   }, []);
   // Load user and dashboard data.
   useEffect(() => {
@@ -227,8 +240,8 @@ export default function DashboardPage() {
       return;
     }
 
-    if (!transactionDate) {
-      toast.error("Please select a transaction date.");
+    if (!transactionDate || !transactionTime) {
+      toast.error("Please select both date and time.");
       return;
     }
 
@@ -241,6 +254,7 @@ export default function DashboardPage() {
         amount,
         description: transactionDescription.trim(),
         date: transactionDate,
+        time: transactionTime,
       });
 
       if (!success) return;
@@ -253,6 +267,7 @@ export default function DashboardPage() {
       setTransactionAmount("");
       setTransactionDescription("");
       setTransactionDate(getTodayDate());
+      setTransactionTime(getCurrentTime());
       setIsTransactionDialogOpen(false);
 
       toast.success("Transaction added successfully.");
@@ -609,9 +624,19 @@ export default function DashboardPage() {
                     id="transactionDate"
                     type="date"
                     value={transactionDate}
-                    onChange={(e) =>
-                      setTransactionDate(e.target.value)
-                    }
+                    onChange={(e) => setTransactionDate(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="transactionTime">Time (IST)</Label>
+
+                  <Input
+                    id="transactionTime"
+                    type="time"
+                    value={transactionTime}
+                    onChange={(e) => setTransactionTime(e.target.value)}
                     required
                   />
                 </div>
