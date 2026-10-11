@@ -1,11 +1,13 @@
+
 import { getToken } from "@/src/lib/generateToken";
 import { prisma } from "@/src/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const idSchema = z.coerce.number().int().positive();
 
 export async function DELETE(
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -13,7 +15,10 @@ export async function DELETE(
     const userId = await getToken();
 
     if (!userId) {
-      return NextResponse.json({ msg: "UNAUTHORIZED" }, { status: 401 });
+      return NextResponse.json(
+        { msg: "UNAUTHORIZED" },
+        { status: 401 },
+      );
     }
 
     // 2. Get and validate transaction ID
@@ -67,9 +72,11 @@ export async function DELETE(
       },
       { status: 200 },
     );
-  } catch (error) {
-    console.error("Delete transaction error:", error);
+  } catch{
 
-    return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { msg: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
