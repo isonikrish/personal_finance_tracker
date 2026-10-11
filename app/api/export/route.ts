@@ -3,7 +3,7 @@ import { prisma } from "@/src/lib/prisma";
 import { NextResponse } from "next/server";
 import PDFDocument from "pdfkit";
 
-export const runtime = "nodejs";
+// export const runtime = "nodejs";
 
 export async function GET() {
   try {
